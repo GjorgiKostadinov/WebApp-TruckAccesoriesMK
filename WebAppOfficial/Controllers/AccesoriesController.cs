@@ -10,63 +10,20 @@ namespace WebAppOfficial.Controllers
     public class AccesoriesController : Controller
     {
 
-        public static Accesories accesories = new Accesories()
-        {
+        public static List<Accesories> accesoriesList = new List<Accesories>() {
+       new Accesories() {
             Name = "Шпанери",
             Description = "Се користат за заштита при пренос на камионска роба",
             Rating = 5,
             Price = "750Ден",
             ImageUrl = @"https://lkw-spanngurte.de/media/image/product/8/md/spanngurt-8m-lc-2500-dan-2tlg.jpg"
-        };
-
+        }
+    };
         public static List<Client> clients = new List<Client>()
         {
-            new Client()
-            {
-                Name = "Трајче",
-                Surname = "Костадинов",
-                Email = "trajcekos@gmail.com",
-                Phone = "070123456",
-                Address = "ул. Македонија бр. 1",
-                City = "Радовиш"
-            },
-
-             new Client()
-            {
-                Name = "Ѓорги",
-                Surname = "Костадинов",
-                Email = "gorgikos@gmail.com",
-                Phone = "070123676",
-                Address = "ул. Македонија бр. 1",
-                City = "Радовиш"
-
-
-            },
-
-              new Client()
-            {
-                Name = "Дарко",
-                Surname = "Павикевик",
-                Email = "darkopavikevik@gmail.com",
-                Phone = "070243456",
-                Address = "ул. Македонија бр. 1",
-                City = "Радовиш"
-
-
-            },
-
-               new Client()
-            {
-                Name = "Давид",
-                Surname = "Стојанов",
-                Email = "davidcestojanov@gmail.com",
-                Phone = "078136666",
-                Address = "ул. Македонија бр. 1",
-                City = "Радовиш"
-
-
-            }   
         };
+        private Accesories accesories;
+        private object model;
 
 
         // GET: Accesories
@@ -75,10 +32,15 @@ namespace WebAppOfficial.Controllers
             return View();
         }
 
-        public ActionResult Random()
+        public ActionResult GetAllAccesories()
+        {
+            return View(accesoriesList);
+        }
+
+        public ActionResult ShowAccesories(int id)
         {
             PurchasedAccesories model = new PurchasedAccesories();
-            model.accesories = accesories;
+            model.accesories = accesoriesList.ElementAt(id);
             model.clients = clients;
 
             return View(model);
@@ -89,5 +51,66 @@ namespace WebAppOfficial.Controllers
             var model = clients.ElementAt(id);
             return View(model);
         }
+
+        public ActionResult NewAccesories()
+        {
+            Accesories model = new Accesories();
+            return View(model);
+        }
+        public ActionResult NewClient()
+        {
+            Client model = new Client();
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult InsertNewClient(Client model)
+        {
+            if (ModelState.IsValid == false)
+            {
+                return View("NewClient", model);
+            }
+            clients.Add(model);
+            return View("GetAllAccesories", accesoriesList);
+        }
+       
+        [HttpPost]
+        public ActionResult InsertNewAccesories(Accesories model)
+        {
+            if(ModelState.IsValid == false)
+            {
+                return View("NewAccesories", model);
+            }
+            accesoriesList.Add(model);
+            return View("GetAllAccesories", accesoriesList);
+        }
+        public ActionResult EditAccesories(int id)
+        {
+            var model = accesoriesList.ElementAt(id);
+            model.Id = id;
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult EditAccesories(Accesories model)
+        {
+            if (ModelState.IsValid == false)
+            {
+                return View("NewAccesories", model);
+            }
+            var forUpdate = accesoriesList.ElementAt(model.Id);
+            forUpdate.Name = model.Name;
+            forUpdate.Description = model.Description;
+            forUpdate.Price = model.Price;
+            forUpdate.ImageUrl = model.ImageUrl;    
+            forUpdate.Rating = model.Rating;    
+            return View("GetAllAccesories", accesoriesList);    
+        }
+
+        public ActionResult DeleteAccesories(int id)
+        {
+            accesoriesList.RemoveAt(id);
+            return View("GetAllAccesories", accesoriesList);
+        }   
     }
 }

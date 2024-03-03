@@ -181,8 +181,12 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Accesories\Random.cshtml" />
+    <Content Include="Views\Accesories\ShowAccesories.cshtml" />
     <Content Include="Views\Accesories\ShowClient.cshtml" />
+    <Content Include="Views\Accesories\GetAllAccesories.cshtml" />
+    <Content Include="Views\Accesories\NewAccesories.cshtml" />
+    <Content Include="Views\Accesories\EditAccesories.cshtml" />
+    <Content Include="Views\Accesories\NewClient.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
